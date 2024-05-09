@@ -1,4 +1,4 @@
-# D-VINS
+# VINS-GNC
 
 This package implements Visual-Inertial Navigation System (VINS) applied to mobile robots working in dynamic
 environment. The implementation is based on [VINS-Fusion](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion). Also, it's enhanced by wheel odometry based on [VIW-Fusion](https://github.com/TouchDeeper/VIW-Fusion).
