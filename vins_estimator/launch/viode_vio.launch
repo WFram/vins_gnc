@@ -1,0 +1,18 @@
+<launch>
+    <arg name="semantics" default="false"/>
+    <arg name="mmseg_path" default="/app/vins/mmsegmentation"/>
+    <arg name="vins_config_path" default="$(find vins)/../config/viode/calibration_mono.yaml"/>
+
+   <node pkg="vins" type="semantic_segmentation_node.py" name="semantic_segmentation_node" output="screen" if="$(arg semantics)">
+       <param name="segmentation_input_topic" value="/cam0/image_raw"/>
+       <param name="segmentation_output_topic" value="/cam0/image_mask"/>
+       <param name="config_file"
+              value="$(arg mmseg_path)/configs/segformer/segformer_mit-b0_8xb2-160k_ade20k-512x512.py"/>
+       <param name="checkpoint_file"
+              value="$(find vins)/../config/nn_model.pth"/>
+   </node>
+
+    <node name="vins_estimator" pkg="vins" type="vins_node" output="screen"
+       args="$(arg vins_config_path)">
+    </node>
+</launch>

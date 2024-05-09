@@ -1,0 +1,110 @@
+%YAML:1.0
+
+#common parameters
+#support: 1 imu 1 cam; 1 imu 2 cam: 2 cam;
+camera: 1
+semantics: 0
+imu: 1
+no_inertial_constraints: 0 # TODO: don't set it for now
+wheel: 0
+no_wheel_constraints: 0  # Whether to use only wheels for initialization (no factor graph aided)
+plane: 0
+number_of_cameras: 1
+
+semantic_palette: "ade20k" # cityscapes, pascal_voc
+
+predict_by_wheels: 0
+
+resize: 0
+dilating_kernel_size: 7
+
+imu_topic: "/imu0"
+image_left_raw_topic: "/cam0/image_raw"
+image_left_semantic_topic: "/cam0/image_mask"
+image_right_raw_topic: "/cam1/image_raw"
+image_right_semantic_topic: "/cam1/image_mask"
+output_path: "/home/wfram/robust_vins_ws/src/Robust-VINS/output"
+
+cam0_calib: "cam0_pinhole.yaml"
+cam1_calib: "cam1_pinhole.yaml"
+image_width: 752
+image_height: 480
+
+# Extrinsic parameter between IMU and Camera.
+estimate_extrinsic: 0   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.
+                        # 1  Have an initial guess about extrinsic parameters. We will optimize around your initial guess.
+
+extrinsic_type: 3
+
+body_T_cam0: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: d
+   data: [0.0, 0.0, 1.0, 0.0,
+          1.0, 0.0, 0.0, 0.0,
+          0.0, 1.0, 0.0, 0.0,
+          0.0, 0.0, 0.0, 1.0]
+
+body_T_cam1: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: d
+   data: [0.0, 0.0, 1.0, 0.0,
+          1.0, 0.0, 0.0, 0.05,
+          0.0, 1.0, 0.0, 0.0,
+          0.0, 0.0, 0.0, 1.0]
+
+# Extrinsic parameter between IMU and Wheel.
+estimate_wheel_extrinsic: 0
+
+extrinsic_type_wheel: 3
+
+body_T_wheel: !!opencv-matrix
+  rows: 4
+  cols: 4
+  dt: d
+  data: [ 1., 0., 0., 0.,
+          0., 1., 0., 0.,
+          0., 0., 1., 0.,
+          0., 0., 0., 1 ]
+
+#Multiple thread support
+multiple_thread: 1
+
+#feature traker paprameters
+max_cnt: 150           # max feature number in feature tracking
+min_dist: 15            # min distance between two features ORIGIN: 15
+use_ransac: 0           # whether to use ransac in frontend
+F_threshold: 2.0        # ransac threshold (pixel) ORIGIN: 2.0
+max_depth: 1000.0         # max estimated depth (m) ORIGIN: 10
+show_raw_track: 1           # publish tracking image as topic
+show_semantic_track: 0
+show_image_feat_weight: 0
+flow_back: 1            # perform forward and backward optical flow to improve feature tracking accuracy
+
+# regularization parameters
+gnc: 1
+loss: 2 # L1 = 0, GM, LECLERC, TLS, ADAPTIVE
+fixed_shape: 1.5
+convexity_init: 6.0 # 10.0 8.0 6.0 4.0 2.0
+convexity_margin: 1.0
+convexity_update: 1.4
+feature_weight_threshold: 0.1
+regularizer: 1.0
+squared_eps: 1.0
+
+#optimization parameters
+max_solver_time: 0.04  # max solver itration time (ms), to guarantee real time ORIGIN: 0.3
+max_num_iterations: 8   # max solver itrations, to guarantee real time ORIGIN: 10
+keyframe_parallax: 10.0 # keyframe selection threshold (pixel)
+
+#imu parameters       The more accurate parameters you provide, the better performance
+acc_n: 0.2          # accelerometer measurement noise standard deviation.
+gyr_n: 0.05         # gyroscope measurement noise standard deviation.
+acc_w: 0.02         # accelerometer bias random work noise standard deviation.
+gyr_w: 4.0e-5       # gyroscope bias random work noise standard deviation.
+g_norm: 9.81007     # gravity magnitude
+
+#unsynchronization parameters
+estimate_td_inertial: 0                      # online estimate time offset between camera and imu
+td_inertial: 0.0                             # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)

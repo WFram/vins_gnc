@@ -1,0 +1,22 @@
+name: vins_env
+channels:
+  - conda-forge
+  - pytorch
+  - defaults
+dependencies:
+  - python=3.8
+  - pytorch=1.10.0=cuda112py38h4f2a933_0
+  - torchvision
+  - pip:
+    - opencv-python==4.1.2.30
+    - matplotlib
+    - pyyaml
+    - opencv-contrib-python==4.1.2.30
+    - tensorflow
+    - pytz
+    - pyqt5
+    - open3d
+    - cityscapesscripts
+    - rospkg
+    - empy
+    - openmim
