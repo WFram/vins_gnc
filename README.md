@@ -3,6 +3,8 @@
 This package implements Visual-Inertial Navigation System (VINS) applied to mobile robots working in dynamic
 environment. The implementation is based on [VINS-Fusion](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion). Also, it's enhanced by wheel odometry based on [VIW-Fusion](https://github.com/TouchDeeper/VIW-Fusion).
 
+Original paper: [Robust Visual-Inertial Odometry for Ground Robots in Dynamic Environments](https://ieeexplore.ieee.org/document/10168408).
+
 ## 1. Installation
 
 Create a catkin workspace where the package will be built.
